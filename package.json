@@ -1,0 +1,14 @@
+{
+  "name": "backup-repo-cli",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./bin/cli.js"
+  },
+  "author": "Javanie Campbell <1676496+javaniecampbell@users.noreply.github.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "typescript": "^5.0.4"
+  }
+}
