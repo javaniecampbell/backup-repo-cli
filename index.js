@@ -6,8 +6,13 @@ const __dirname = path.dirname(__filename);
 
 async function main() {
     const folderPaths = [path.resolve(__dirname, "./")];
-
-    const directories = walkFolders(folderPaths);
+    // const folderPath = path.resolve(__dirname, "./")
+    // const results = fs.readdirSync(path.resolve(__dirname, "./"));
+    // const folders = results.filter((result) => {
+    //     return fs.lstatSync(path.resolve(folderPath, result)).isDirectory();
+    // });
+    // console.log(folders);
+    const directories = walkFolders(folderPaths, [], { depth: 0, maxDepth: Infinity });
 
     console.log("Directories:");
     console.log("------------");
@@ -23,7 +28,10 @@ main().then(() => {
     console.log(err);
 });
 
-function walkFolders(folderPaths, dirList = [], depth = 0) {
+function walkFolders(folderPaths, dirList = [], options = { depth: 0, maxDepth: 3 }) {
+    if (options.depth >= options.maxDepth) {
+        return;
+    }
     folderPaths.forEach((folderPath) => {
         const results = fs.readdirSync(folderPath);
         const folders = results.filter((result) => {
@@ -33,10 +41,12 @@ function walkFolders(folderPaths, dirList = [], depth = 0) {
         if (innerFolderPaths.length === 0) {
             return;
         }
+
         //innerFolderPaths.forEach((innerFolderPath) => dirList.push(innerFolderPath));
-        //dirList.push({ depth, folderPath, folders });
-        dirList.push(innerFolderPaths);
-        walkFolders(innerFolderPaths, dirList);
+        dirList.push({ depth: options.depth + 1, folderPath, folders });
+        //dirList.push(innerFolderPaths);
+        walkFolders(innerFolderPaths, dirList, { depth: options.depth + 1 });
+
     });
     return dirList;
 }
