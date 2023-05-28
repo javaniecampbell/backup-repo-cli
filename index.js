@@ -3,8 +3,7 @@ import path from "path";
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-async function main() {
+async function main(args) {
     const folderPaths = [path.resolve(__dirname, "./")];
     // const folderPath = path.resolve(__dirname, "./")
     // const results = fs.readdirSync(path.resolve(__dirname, "./"));
@@ -18,10 +17,16 @@ async function main() {
     console.log("------------");
     // console.log(directories);
     directories.forEach((directory) => console.log(directory));
+    console.log('args', args);
 }
 
+const args = process.argv.slice(2);
 
-main().then(() => {
+// (async () => {
+//     await main(args);
+//  })();
+
+main(args).then(() => {
     console.log("Done");
 }
 ).catch((err) => {
