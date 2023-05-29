@@ -14,9 +14,14 @@ async function main(args) {
     const directories = walkFolders(folderPaths, [], { depth: 0, maxDepth: Infinity });
 
     console.log("Directories:");
-    console.log("------------");
-    // console.log(directories);
+    console.log("------------\n\n");
     directories.forEach((directory) => console.log(directory));
+    // console.log(directories);
+    console.log("Git Directories:");
+    console.log("------------\n\n");
+    const gitRepositories = filterGitRepositories(folderPaths);
+    console.log(gitRepositories);
+    console.log("------------\n\n");
     console.log('args', args);
 }
 
@@ -27,11 +32,21 @@ const args = process.argv.slice(2);
 //  })();
 
 main(args).then(() => {
-    console.log("Done");
+    console.log("\n\nDone 🚀🚀");
 }
 ).catch((err) => {
     console.log(err);
 });
+
+function filterGitRepositories(folderPaths) {
+    const directories = walkFolders(folderPaths, [], { depth: 0, maxDepth: Infinity });
+    const gitRepositories = directories.filter((directory) => {
+        return directory.folders.includes(".git");
+    });
+    return gitRepositories;
+}
+
+
 
 function walkFolders(folderPaths, dirList = [], options = { depth: 0, maxDepth: 3 }) {
     if (options.depth >= options.maxDepth) {
