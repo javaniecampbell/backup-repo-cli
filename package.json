@@ -5,6 +5,9 @@
   "exports": {
     ".": "./bin/cli.js"
   },
+  "bin": {
+    "backup-repo-cli": "node ."
+  },
   "author": "Javanie Campbell <1676496+javaniecampbell@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
