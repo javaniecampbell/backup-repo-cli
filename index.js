@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 async function main(args) {
-    const folderPaths = [path.resolve(__dirname, "./")];
+    const folderPaths = [path.resolve(__dirname, process.cwd())];
     // const folderPath = path.resolve(__dirname, "./")
     // const results = fs.readdirSync(path.resolve(__dirname, "./"));
     // const folders = results.filter((result) => {
