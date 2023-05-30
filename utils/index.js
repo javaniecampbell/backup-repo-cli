@@ -10,7 +10,33 @@ export function filterGitRepositories(folderPaths) {
     return gitRepositories;
 }
 
+export function hasGitRemote(data) {
+    return data.includes("http");
+}
 
+export function hasUncleanWorkingTree(data) {
+    return data.includes("Changes not staged for commit");
+}
+
+export function hasUnpushedCommits(data) {
+    return data.includes("Your branch is ahead of");
+}
+
+export function hasUnpulledCommits(data) {
+    return data.includes("Your branch is behind");
+}
+
+export function hasUntrackedFiles(data) {
+    return data.includes("Untracked files");
+}
+
+export function hasUnmergedFiles(data) {
+    return data.includes("Unmerged paths");
+}
+
+export function hasStashedChanges(data) {
+    return data.includes("Changes to be committed");
+}
 
 export function walkFolders(folderPaths, dirList = [], options = { depth: 0, maxDepth: 3 }) {
     if (options.depth >= options.maxDepth) {
