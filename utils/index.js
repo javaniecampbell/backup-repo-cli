@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import path from "path";
+import { spawn } from "child_process";
 
 export function filterGitRepositories(folderPaths) {
     const directories = walkFolders(folderPaths, [], { depth: 0, maxDepth: Infinity });
@@ -32,4 +33,56 @@ export function walkFolders(folderPaths, dirList = [], options = { depth: 0, max
 
     });
     return dirList;
+}
+
+export function getGitStatus(folderPath) {
+    return new Promise((resolve, reject) => {
+        const git = spawn("git", ["status"], { cwd: folderPath });
+        git.stdout.on("data", (data) => {
+            resolve(data.toString());
+        });
+        git.stderr.on("data", (data) => {
+            reject(data.toString());
+        });
+
+        git.on("error", (err) => {
+            reject(err);
+        });
+
+        git.on("close", (code, signal) => {
+            if (code !== 0) {
+                reject(`git status exited with code ${code}`);
+            }
+            if(signal) {
+                reject(`git status was killed with signal ${signal}`);
+            }
+        });
+
+    });
+}
+
+export function getGitRemote(folderPath){
+    return new Promise((resolve, reject) => {
+        const git = spawn("git", ["remote", "-v"], { cwd: folderPath });
+        git.stdout.on("data", (data) => {
+            resolve(data.toString());
+        });
+        git.stderr.on("data", (data) => {
+            reject(data.toString());
+        });
+
+        git.on("error", (err) => {
+            reject(err);
+        });
+
+        git.on("close", (code, signal) => {
+            if (code !== 0) {
+                reject(`git status exited with code ${code}`);
+            }
+            if(signal) {
+                reject(`git status was killed with signal ${signal}`);
+            }
+        });
+
+    });
 }
