@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import path from "path";
-import { spawn } from "child_process";
+import { spawn, exec } from "child_process";
 
 export function filterGitRepositories(folderPaths) {
     const directories = walkFolders(folderPaths, [], { depth: 0, maxDepth: Infinity });
@@ -113,5 +113,19 @@ export function getGitRemote(folderPath) {
             resolve(result);
         });
 
+    });
+}
+
+export function commitChanges(folderPath){
+    return new Promise((resolve, reject) => {
+      exec(`git add -A && git commit -am "feat: commit changes for cli backup process "`, { cwd: folderPath }, (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+        }
+        if (stderr) {
+          reject(stderr);
+        }
+        resolve(stdout);
+      });
     });
 }
