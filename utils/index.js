@@ -38,8 +38,9 @@ export function walkFolders(folderPaths, dirList = [], options = { depth: 0, max
 export function getGitStatus(folderPath) {
     return new Promise((resolve, reject) => {
         const git = spawn("git", ["status"], { cwd: folderPath });
+        let result = '';
         git.stdout.on("data", (data) => {
-            resolve(data.toString());
+              result += data.toString();
         });
         git.stderr.on("data", (data) => {
             reject(data.toString());
@@ -53,19 +54,20 @@ export function getGitStatus(folderPath) {
             if (code !== 0) {
                 reject(`git status exited with code ${code}`);
             }
-            if(signal) {
+            if (signal) {
                 reject(`git status was killed with signal ${signal}`);
             }
         });
-
+        resolve(result);
     });
 }
 
-export function getGitRemote(folderPath){
+export function getGitRemote(folderPath) {
     return new Promise((resolve, reject) => {
         const git = spawn("git", ["remote", "-v"], { cwd: folderPath });
+        let result = '';
         git.stdout.on("data", (data) => {
-            resolve(data.toString());
+           result += data.toString();
         });
         git.stderr.on("data", (data) => {
             reject(data.toString());
@@ -79,9 +81,10 @@ export function getGitRemote(folderPath){
             if (code !== 0) {
                 reject(`git status exited with code ${code}`);
             }
-            if(signal) {
+            if (signal) {
                 reject(`git status was killed with signal ${signal}`);
             }
+            resolve(result);
         });
 
     });
