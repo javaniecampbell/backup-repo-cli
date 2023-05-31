@@ -61,6 +61,9 @@ async function main(args) {
         if (!hasGitRemote(remote)) {
             console.log("No remote found for " + gitRepository.folderPath
                 + "\n\n");
+        }else{
+            console.log("Remote found for " + gitRepository.folderPath
+                + "\n\n");
         }
     }
 
