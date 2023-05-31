@@ -37,8 +37,10 @@ async function main(args) {
         console.log("status for " + gitRepository.folderPath + ":\n\n" + status + "\n\n");
         // STEP 6:      if there are any changes, then add all the changes by running the command "git add -A && git commit -m 'commit message'"
         if (hasUncleanWorkingTree(status)) {
-            // await commitChanges(gitRepository.folderPath);
-            console.log("hasUncleanWorkingTree");
+            await commitChanges(gitRepository.folderPath, "for unclean working tree");
+        }
+        if (hasUntrackedFiles(status)) {
+            await commitChanges(gitRepository.folderPath, "for untracked files");
         }
         if (hasStashedChanges(status)) {
             console.log("hasStashedChanges");
@@ -48,9 +50,6 @@ async function main(args) {
         }
         if (hasUnpulledCommits(status)) {
             console.log("hasUnpulledCommits");
-        }
-        if (hasUntrackedFiles(status)) {
-            console.log("hasUntrackedFiles");
         }
         // STEP 6.1:    if there are unpushed changes, then push all the changes by running the command "git push --all --follow-tags"
         if (hasUnpushedCommits(status)) {
