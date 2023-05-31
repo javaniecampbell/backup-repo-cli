@@ -34,7 +34,7 @@ export function hasUnmergedFiles(data) {
     return data.includes("Unmerged paths");
 }
 
-export function hasStashedChanges(data) {
+export function hasStagedChanges(data) {
     return data.includes("Changes to be committed");
 }
 
