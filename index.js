@@ -36,6 +36,11 @@ async function main(args) {
         let status = await getGitStatus(gitRepository.folderPath);
         console.log("status for " + gitRepository.folderPath + ":\n\n" + status + "\n\n");
         // STEP 6:      if there are any changes, then add all the changes by running the command "git add -A && git commit -m 'commit message'"
+        if (hasStagedChanges(status)) {
+            await commitChanges(gitRepository.folderPath, "for staged changes");
+            status = await getGitStatus(gitRepository.folderPath);
+            console.log("hasStagedChanges" + "\n");
+        }
         if (hasUncleanWorkingTree(status)) {
             await commitChanges(gitRepository.folderPath, "for unclean working tree");
             status = await getGitStatus(gitRepository.folderPath);
@@ -45,11 +50,6 @@ async function main(args) {
             await commitChanges(gitRepository.folderPath, "for untracked files");
             status = await getGitStatus(gitRepository.folderPath);
             console.log("hasUntrackedFiles" + "\n");
-        }
-        if (hasStagedChanges(status)) {
-            await commitChanges(gitRepository.folderPath, "for staged changes");
-            status = await getGitStatus(gitRepository.folderPath);
-            console.log("hasStagedChanges" + "\n");
         }
         if (hasUnmergedFiles(status)) {
             console.log("hasUnmergedFiles" + "\n");
