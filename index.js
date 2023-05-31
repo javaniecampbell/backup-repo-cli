@@ -11,7 +11,7 @@ import {
     hasUnmergedFiles,
     hasUnpushedCommits,
     hasUncleanWorkingTree,
-    hasStashedChanges,
+    hasStagedChanges,
     hasUntrackedFiles,
     hasUnpulledCommits,
     commitChanges
@@ -33,34 +33,40 @@ async function main(args) {
         const remote = await getGitRemote(gitRepository.folderPath);
 
         // STEP 5:      if exists check the git status of the repository
-        const status = await getGitStatus(gitRepository.folderPath);
+        let status = await getGitStatus(gitRepository.folderPath);
         console.log("status for " + gitRepository.folderPath + ":\n\n" + status + "\n\n");
         // STEP 6:      if there are any changes, then add all the changes by running the command "git add -A && git commit -m 'commit message'"
         if (hasUncleanWorkingTree(status)) {
             await commitChanges(gitRepository.folderPath, "for unclean working tree");
+            status = await getGitStatus(gitRepository.folderPath);
+            console.log("hasUncleanWorkingTree" + "\n");
         }
         if (hasUntrackedFiles(status)) {
             await commitChanges(gitRepository.folderPath, "for untracked files");
+            status = await getGitStatus(gitRepository.folderPath);
+            console.log("hasUntrackedFiles" + "\n");
         }
-        if (hasStashedChanges(status)) {
-            console.log("hasStashedChanges");
+        if (hasStagedChanges(status)) {
+            await commitChanges(gitRepository.folderPath, "for staged changes");
+            status = await getGitStatus(gitRepository.folderPath);
+            console.log("hasStagedChanges" + "\n");
         }
         if (hasUnmergedFiles(status)) {
-            console.log("hasUnmergedFiles");
+            console.log("hasUnmergedFiles" + "\n");
         }
         if (hasUnpulledCommits(status)) {
-            console.log("hasUnpulledCommits");
+            console.log("hasUnpulledCommits" + "\n");
         }
         // STEP 6.1:    if there are unpushed changes, then push all the changes by running the command "git push --all --follow-tags"
         if (hasUnpushedCommits(status)) {
-            console.log("hasUnpushedCommits");
+            console.log("hasUnpushedCommits" + "\n");
         }
         // STEP 7:      if there is no remote with the name "origin" or any other name, then add the remote by running the command "git remote add origin <url>"
         // STEP 7.1:    if there is no remote then create one by running the command "gh repo create <repo-name> --source=. --public/--private --confirm --push"
         if (!hasGitRemote(remote)) {
             console.log("No remote found for " + gitRepository.folderPath
                 + "\n\n");
-        }else{
+        } else {
             console.log("Remote found for " + gitRepository.folderPath
                 + "\n\n");
         }
