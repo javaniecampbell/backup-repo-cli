@@ -66,7 +66,7 @@ export function getGitStatus(folderPath) {
         const git = spawn("git", ["status"], { cwd: folderPath });
         let result = '';
         git.stdout.on("data", (data) => {
-              result += data.toString();
+            result += data.toString();
         });
         git.stderr.on("data", (data) => {
             reject(data.toString());
@@ -83,8 +83,8 @@ export function getGitStatus(folderPath) {
             if (signal) {
                 reject(`git status was killed with signal ${signal}`);
             }
+            resolve(result);
         });
-        resolve(result);
     });
 }
 
@@ -93,7 +93,7 @@ export function getGitRemote(folderPath) {
         const git = spawn("git", ["remote", "-v"], { cwd: folderPath });
         let result = '';
         git.stdout.on("data", (data) => {
-           result += data.toString();
+            result += data.toString();
         });
         git.stderr.on("data", (data) => {
             reject(data.toString());
@@ -116,16 +116,16 @@ export function getGitRemote(folderPath) {
     });
 }
 
-export function commitChanges(folderPath){
+export function commitChanges(folderPath) {
     return new Promise((resolve, reject) => {
-      exec(`git add -A && git commit -am "feat: commit changes for cli backup process "`, { cwd: folderPath }, (err, stdout, stderr) => {
-        if (err) {
-          reject(err);
-        }
-        if (stderr) {
-          reject(stderr);
-        }
-        resolve(stdout);
-      });
+        exec(`git add -A && git commit -am "feat: commit changes for cli backup process "`, { cwd: folderPath }, (err, stdout, stderr) => {
+            if (err) {
+                reject(err);
+            }
+            if (stderr) {
+                reject(stderr);
+            }
+            resolve(stdout);
+        });
     });
 }
