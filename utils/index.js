@@ -116,9 +116,9 @@ export function getGitRemote(folderPath) {
     });
 }
 
-export function commitChanges(folderPath) {
+export function commitChanges(folderPath, message = null) {
     return new Promise((resolve, reject) => {
-        exec(`git add -A && git commit -am "feat: commit changes for cli backup process "`, { cwd: folderPath }, (err, stdout, stderr) => {
+        exec(`git add -A && git commit -am "feat: commit changes for cli backup process ${message}"`, { cwd: folderPath }, (err, stdout, stderr) => {
             if (err) {
                 reject(err);
             }
