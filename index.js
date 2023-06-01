@@ -14,7 +14,6 @@ import {
     hasStagedChanges,
     hasUntrackedFiles,
     hasUnpulledCommits,
-    commitChanges,
     addAllChanges,
     commitAllChanges,
     pushChanges,
