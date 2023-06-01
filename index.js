@@ -81,7 +81,7 @@ async function main(args) {
             if (!hasGitRemote(remote)) {
                 console.log("No remote found for " + gitRepository.folderPath
                     + "\n\n");
-                const result = await createRepository(gitRepository.folderPath, null, gitRepository.folderPath, { isPublic: false, isPrivate: true, isConfirm: false, isPush: true });
+                const result = await createRepository(gitRepository.folderPath, null, ".", { isPublic: false, isPrivate: true, isConfirm: false, isPush: true });
                 console.log(result);
             } else {
                 console.log("Remote found for " + gitRepository.folderPath
