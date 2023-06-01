@@ -44,12 +44,14 @@ async function main(args) {
             if (hasStagedChanges(status)) {
                 await addAllChanges(gitRepository.folderPath);
                 await commitAllChanges(gitRepository.folderPath, "for staged changes");
+                const pushResults = await pushChanges(gitRepository.folderPath);
                 status = await getGitStatus(gitRepository.folderPath);
                 console.log("hasStagedChanges" + "\n");
             }
             if (hasUncleanWorkingTree(status)) {
                 await addAllChanges(gitRepository.folderPath);
                 await commitAllChanges(gitRepository.folderPath, "for unclean working tree");
+                const pushResults = await pushChanges(gitRepository.folderPath);
                 status = await getGitStatus(gitRepository.folderPath);
                 console.log("hasUncleanWorkingTree" + "\n");
                 console.log(status);
@@ -57,6 +59,7 @@ async function main(args) {
             if (hasUntrackedFiles(status)) {
                 await addAllChanges(gitRepository.folderPath);
                 await commitAllChanges(gitRepository.folderPath, "for untracked files");
+                const pushResults = await pushChanges(gitRepository.folderPath);
                 status = await getGitStatus(gitRepository.folderPath);
                 console.log("hasUntrackedFiles" + "\n");
                 console.log(status);
