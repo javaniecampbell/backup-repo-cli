@@ -166,6 +166,10 @@ export function createRepository(folderPath, name = null, source = ".", { isPubl
             flags.splice(2, 1);
         }
 
+        if(isPublic === false && isPrivate === false) {
+            flags.splice(4, 1);
+        }
+
         const git = spawn("gh", flags, { cwd: folderPath });
         let result = '';
         git.stdout.on("data", (data) => {
