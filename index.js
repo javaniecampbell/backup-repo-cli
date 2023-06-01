@@ -14,7 +14,8 @@ import {
     hasStagedChanges,
     hasUntrackedFiles,
     hasUnpulledCommits,
-    commitChanges
+    commitChanges,
+    pushChanges
 } from "./utils/index.js";
 
 
@@ -59,6 +60,7 @@ async function main(args) {
         }
         // STEP 6.1:    if there are unpushed changes, then push all the changes by running the command "git push --all --follow-tags"
         if (hasUnpushedCommits(status)) {
+            await pushChanges(gitRepository.folderPath);
             console.log("hasUnpushedCommits" + "\n");
         }
         // STEP 7:      if there is no remote with the name "origin" or any other name, then add the remote by running the command "git remote add origin <url>"
