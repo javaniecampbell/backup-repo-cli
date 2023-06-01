@@ -226,7 +226,7 @@ export function createRepository(folderPath, name = null, source = ".", { isPubl
         // if (isPublic === false && isPrivate === false) {
         //     flags.splice(4, 1);
         // }
-        const flags = ["repo", "create", name, "--source=" + source, isPublic ? "--public" : isPrivate ? "--private" : null, isPush ? "--push" : null, isConfirm ? "--confirm" : "--no-confirm"].filter(Boolean);
+        const flags = ["repo", "create", name, "--source=" + source, isPublic ? "--public" : isPrivate ? "--private" : null, isPush ? "--push" : null, isConfirm ? "--confirm" : null].filter(Boolean);
         console.log("flags", flags);
         const git = spawn("gh", flags, { cwd: folderPath });
         let result = '';
