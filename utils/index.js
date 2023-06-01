@@ -132,7 +132,36 @@ export function commitChanges(folderPath, message = null) {
 
 export function pushChanges(folderPath) {
     return new Promise((resolve, reject) => {
-        const git= spawn("git", ["push", "--all", "--follow-tags"], { cwd: folderPath });
+        const git = spawn("git", ["push", "--all", "--follow-tags"], { cwd: folderPath });
+        let result = '';
+        git.stdout.on("data", (data) => {
+            result += data.toString();
+        });
+
+        git.stderr.on("data", (data) => {
+            reject(data.toString());
+        });
+
+        git.on("error", (err) => {
+            reject(err);
+        });
+
+        git.on("close", (code, signal) => {
+            if (code !== 0) {
+                reject(`git status exited with code ${code}`);
+            }
+            if (signal) {
+                reject(`git status was killed with signal ${signal}`);
+            }
+            resolve(result);
+        });
+
+    });
+}
+
+export function createRepository(folderPath, name, source, { isPublic = true, isPrivate = false, isConfirm = false, isPush = true }) {
+    return new Promise((resolve, reject) => {
+        const git = spawn("gh", ["repo", "create", name, "--source=" + source, isPublic ? "--public" : isPrivate ? "--private" : "", isPush ? "--push" : "", isConfirm ? "--confirm" : "--no-confirm"], { cwd: folderPath });
         let result = '';
         git.stdout.on("data", (data) => {
             result += data.toString();
