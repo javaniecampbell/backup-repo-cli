@@ -217,16 +217,18 @@ export function pushChanges(folderPath) {
 
 export function createRepository(folderPath, name = null, source = ".", { isPublic = true, isPrivate = false, isConfirm = false, isPush = true }) {
     return new Promise((resolve, reject) => {
-        const flags = ["repo", "create", name, "--source=" + source, isPublic ? "--public" : isPrivate ? "--private" : "", isPush ? "--push" : "", isConfirm ? "--confirm" : "--no-confirm"];
-        if (!name) {
-            flags.splice(2, 1);
-        }
+        // const flags = ["repo", "create", name, "--source=" + source, isPublic ? "--public" : isPrivate ? "--private" : "", isPush ? "--push" : "", isConfirm ? "--confirm" : "--no-confirm"];
 
-        if (isPublic === false && isPrivate === false) {
-            flags.splice(4, 1);
-        }
+        // if (!name) {
+        //     flags.splice(2, 1);
+        // }
 
-        const git = spawn("gh", flags, { cwd: folderPath });
+        // if (isPublic === false && isPrivate === false) {
+        //     flags.splice(4, 1);
+        // }
+        const flags = ["repo", "create", name, "--source=" + source, isPublic ? "--public" : isPrivate ? "--private" : null, isPush ? "--push" : null, isConfirm ? "--confirm" : "--no-confirm"];
+
+        const git = spawn("gh", flags.filter(Boolean), { cwd: folderPath });
         let result = '';
         git.stdout.on("data", (data) => {
             result += data.toString();
