@@ -47,11 +47,13 @@ async function main(args) {
             await commitChanges(gitRepository.folderPath, "for unclean working tree");
             status = await getGitStatus(gitRepository.folderPath);
             console.log("hasUncleanWorkingTree" + "\n");
+            console.log(status);
         }
         if (hasUntrackedFiles(status)) {
             await commitChanges(gitRepository.folderPath, "for untracked files");
             status = await getGitStatus(gitRepository.folderPath);
             console.log("hasUntrackedFiles" + "\n");
+            console.log(status);
         }
         if (hasUnmergedFiles(status)) {
             console.log("hasUnmergedFiles" + "\n");
@@ -61,15 +63,17 @@ async function main(args) {
         }
         // STEP 6.1:    if there are unpushed changes, then push all the changes by running the command "git push --all --follow-tags"
         if (hasUnpushedCommits(status)) {
-            await pushChanges(gitRepository.folderPath);
+            const pushResults = await pushChanges(gitRepository.folderPath);
             console.log("hasUnpushedCommits" + "\n");
+            console.log(pushResults);
         }
         // STEP 7:      if there is no remote with the name "origin" or any other name, then add the remote by running the command "git remote add origin <url>"
         // STEP 7.1:    if there is no remote then create one by running the command "gh repo create <repo-name> --source=. --public/--private --confirm --push"
         if (!hasGitRemote(remote)) {
             console.log("No remote found for " + gitRepository.folderPath
                 + "\n\n");
-                await createRepository(gitRepository.folderPath, null, ".", { isPublic: false, isPrivate: true, isConfirm: false, isPush: true });
+            const result = await createRepository(gitRepository.folderPath, null, ".", { isPublic: false, isPrivate: true, isConfirm: false, isPush: true });
+            console.log(result);
         } else {
             console.log("Remote found for " + gitRepository.folderPath
                 + "\n\n");
