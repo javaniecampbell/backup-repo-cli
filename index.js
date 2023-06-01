@@ -15,6 +15,8 @@ import {
     hasUntrackedFiles,
     hasUnpulledCommits,
     commitChanges,
+    addAllChanges,
+    commitAllChanges,
     pushChanges,
     createRepository
 } from "./utils/index.js";
@@ -40,18 +42,21 @@ async function main(args) {
             console.log("status for " + gitRepository.folderPath + ":\n\n" + status + "\n\n");
             // STEP 6:      if there are any changes, then add all the changes by running the command "git add -A && git commit -m 'commit message'"
             if (hasStagedChanges(status)) {
-                await commitChanges(gitRepository.folderPath, "for staged changes");
+                await addAllChanges(gitRepository.folderPath);
+                await commitAllChanges(gitRepository.folderPath, "for staged changes");
                 status = await getGitStatus(gitRepository.folderPath);
                 console.log("hasStagedChanges" + "\n");
             }
             if (hasUncleanWorkingTree(status)) {
-                await commitChanges(gitRepository.folderPath, "for unclean working tree");
+                await addAllChanges(gitRepository.folderPath);
+                await commitAllChanges(gitRepository.folderPath, "for unclean working tree");
                 status = await getGitStatus(gitRepository.folderPath);
                 console.log("hasUncleanWorkingTree" + "\n");
                 console.log(status);
             }
             if (hasUntrackedFiles(status)) {
-                await commitChanges(gitRepository.folderPath, "for untracked files");
+                await addAllChanges(gitRepository.folderPath);
+                await commitAllChanges(gitRepository.folderPath, "for untracked files");
                 status = await getGitStatus(gitRepository.folderPath);
                 console.log("hasUntrackedFiles" + "\n");
                 console.log(status);
