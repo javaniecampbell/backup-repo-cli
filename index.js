@@ -15,7 +15,8 @@ import {
     hasUntrackedFiles,
     hasUnpulledCommits,
     commitChanges,
-    pushChanges
+    pushChanges,
+    createRepository
 } from "./utils/index.js";
 
 
@@ -68,6 +69,7 @@ async function main(args) {
         if (!hasGitRemote(remote)) {
             console.log("No remote found for " + gitRepository.folderPath
                 + "\n\n");
+                await createRepository(gitRepository.folderPath, null, ".", { isPublic: false, isPrivate: true, isConfirm: false, isPush: true });
         } else {
             console.log("Remote found for " + gitRepository.folderPath
                 + "\n\n");
