@@ -116,9 +116,37 @@ export function getGitRemote(folderPath) {
     });
 }
 
-export function addAllChanges(folderPath){
+export function addAllChanges(folderPath) {
     return new Promise((resolve, reject) => {
         const git = spawn("git", ["add", "-A"], { cwd: folderPath });
+        let result = '';
+        git.stdout.on("data", (data) => {
+            result += data.toString();
+        });
+
+        git.stderr.on("data", (data) => {
+            reject(data.toString());
+        });
+
+        git.on("error", (err) => {
+            reject(err);
+        });
+
+        git.on("close", (code, signal) => {
+            if (code !== 0) {
+                reject(`git status exited with code ${code}`);
+            }
+            if (signal) {
+                reject(`git status was killed with signal ${signal}`);
+            }
+            resolve(result);
+        });
+    });
+}
+
+export function commitAllChanges(folderPath, message = null) {
+    return new Promise((resolve, reject) => {
+        const git = spawn("git", ["commit", "-am", `"feat: commit changes for cli backup process ${message}"`], { cwd: folderPath });
         let result = '';
         git.stdout.on("data", (data) => {
             result += data.toString();
@@ -194,7 +222,7 @@ export function createRepository(folderPath, name = null, source = ".", { isPubl
             flags.splice(2, 1);
         }
 
-        if(isPublic === false && isPrivate === false) {
+        if (isPublic === false && isPrivate === false) {
             flags.splice(4, 1);
         }
 
