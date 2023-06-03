@@ -146,7 +146,7 @@ export function addAllChanges(folderPath) {
 
 export function commitAllChanges(folderPath, message = null) {
     return new Promise((resolve, reject) => {
-        const git = spawn("git", ["commit", "-am", `"feat: commit changes for cli backup process ${message}"`], { cwd: folderPath });
+        const git = spawn("git", ["commit", "-am", `feat: commit changes for cli backup process ${message}`], { cwd: folderPath });
         let result = '';
         git.stdout.on("data", (data) => {
             result += data.toString();
